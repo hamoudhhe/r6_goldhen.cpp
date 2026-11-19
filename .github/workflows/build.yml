@@ -1,0 +1,17 @@
+name: Build PS4 PRX
+on: [workflow_dispatch]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build ELF
+        run: |
+          sudo apt-get update && sudo apt-get install -y clang lld
+          clang++ -target x86_64-pc-freebsd11-elf -fPIC -shared -O2 r6_goldhen.cpp -o r6_goldhen.prx
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: r6-prx
+          path: r6_goldhen.prx
